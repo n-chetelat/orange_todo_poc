@@ -2,12 +2,12 @@ import { Todo } from "@/types";
 
 const todos: Todo[] = [
   {
-    id: 1,
+    id: "1",
     content: "Wash orange",
     done: false,
   },
   {
-    id: 2,
+    id: "2",
     content: "Peel orange",
     done: false,
   },
