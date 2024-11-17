@@ -1,7 +1,7 @@
 import { getTodos } from "@/queries/todos";
 import TodoItem from "@/components/TodoItem";
 
-const todos = getTodos();
+const todos = await getTodos();
 
 export default function Home() {
   return (

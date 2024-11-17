@@ -1,5 +1,1 @@
-export type Todo = {
-  id: string;
-  content: string;
-  done: boolean;
-};
+export { type Todo } from "@prisma/client";
