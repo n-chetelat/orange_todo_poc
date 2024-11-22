@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Orange ToDo",
+  title: "Orange To-Do",
 };
 
 export default function RootLayout({

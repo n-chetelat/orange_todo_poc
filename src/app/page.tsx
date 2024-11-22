@@ -1,13 +1,12 @@
 import { getTodos } from "@/queries/todos";
 import TodoItem from "@/components/TodoItem";
-import { createTodo } from "@/actions/todos";
+import TodoForm from "@/components/TodoForm";
 
-const todos = await getTodos();
-
-export default function Home() {
+export default async function Home() {
+  const todos = await getTodos();
   return (
     <main className="p-4 flex flex-col gap-4 items-center">
-      <h1 className="text-xl font-semibold">Orange ToDo</h1>
+      <h1 className="text-xl font-semibold">Orange To-Do</h1>
       <div className="max-w-lg w-full">
         <ul className="flex flex-col gap-4 p-4 border-orange-300 border-4 rounded-sm">
           {todos.map((todo) => (
@@ -15,9 +14,7 @@ export default function Home() {
           ))}
         </ul>
       </div>
-      <button className="bg-orange-300 p-4 rounded-md hover:bg-orange-400">
-        Add Todo
-      </button>
+      <TodoForm />
     </main>
   );
 }
