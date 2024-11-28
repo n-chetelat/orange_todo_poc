@@ -12,7 +12,7 @@ export default async function Home() {
           {todos.length ? (
             todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)
           ) : (
-            <p className="text-center">You have nothing to do!</p>
+            <p className="text-center">You have nothing orange to do!</p>
           )}
         </ul>
         <TodoForm />
