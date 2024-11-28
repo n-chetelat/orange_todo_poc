@@ -1,20 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { Todo } from "@/types";
-import { updateTodo, deleteTodo } from "@/actions/todos";
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { Todo, TodoCreateInput } from "@/types";
+import { updateTodo, deleteTodo, updateTodoDone } from "@/actions/todos";
+import React from "react";
 
 export default function TodoItem({ todo }: { todo: Todo }) {
-  const [content, setContent] = useState<string>(todo.content);
-  const [checked, setChecked] = useState<boolean>(todo.done);
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      content: todo.content,
+      done: todo.done,
+    },
+  });
 
-  const handleUpdateTodo = async () => {
+  const contentRef = useRef<HTMLInputElement | null>(null);
+  const { ref, ...contentRegister } = register("content");
+
+  const handleUpdateTodo = async (data: TodoCreateInput) => {
     try {
-      await updateTodo({
-        id: todo.id,
-        content,
-        done: checked,
+      await updateTodo(todo.id, {
+        content: data.content,
+        done: data.done,
       });
+      contentRef.current?.blur();
     } catch (error) {
       console.log(error);
     }
@@ -29,25 +38,34 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   };
 
   return (
-    <li className="flex flex-row gap-2 border-b border-orange-300 p-2  justify-between last:border-none">
-      <div className="flex gap-2">
-        <input type="checkbox" onChange={(e) => setChecked(e.target.checked)} />
-        <input value={content} onChange={(e) => setContent(e.target.value)} />
-      </div>
-      <div className="flex gap-2">
+    <li className="border-b border-orange-300 p-2 last:border-none">
+      <form
+        onSubmit={handleSubmit(handleUpdateTodo)}
+        className="flex flex-row gap-2 justify-between"
+      >
+        <input
+          {...register("done")}
+          type="checkbox"
+          onChange={async (e) => {
+            await updateTodoDone(todo.id, e.target.checked);
+          }}
+        />
+        <input
+          {...contentRegister}
+          ref={(element) => {
+            ref(element);
+            contentRef.current = element;
+          }}
+        />
+
         <button
-          className="bg-orange-300 px-2 rounded-md hover:bg-orange-400"
-          onClick={handleUpdateTodo}
-        >
-          Save
-        </button>
-        <button
+          type="button"
           className="bg-orange-300 px-2 rounded-md hover:bg-orange-400"
           onClick={handleDeleteTodo}
         >
           Remove
         </button>
-      </div>
+      </form>
     </li>
   );
 }

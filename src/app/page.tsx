@@ -7,14 +7,16 @@ export default async function Home() {
   return (
     <main className="p-4 flex flex-col gap-4 items-center">
       <h1 className="text-xl font-semibold">Orange To-Do</h1>
-      <div className="max-w-lg w-full">
+      <div className="max-w-lg w-full flex flex-col gap-4">
         <ul className="flex flex-col gap-4 p-4 border-orange-300 border-4 rounded-sm">
-          {todos.map((todo) => (
-            <TodoItem key={todo.id} todo={todo} />
-          ))}
+          {todos.length ? (
+            todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)
+          ) : (
+            <p className="text-center">You have nothing to do!</p>
+          )}
         </ul>
+        <TodoForm />
       </div>
-      <TodoForm />
     </main>
   );
 }

@@ -1,10 +1,10 @@
 "use server";
 
 import prisma from "@/libs/prisma";
-import { Todo } from "@/types";
+import { Todo, TodoCreateInput } from "@/types";
 import { revalidatePath } from "next/cache";
 
-export async function createTodo(data: Omit<Todo, "id">): Promise<Todo> {
+export async function createTodo(data: TodoCreateInput): Promise<Todo> {
   const newTodo = await prisma.todo.create({
     data,
   });
@@ -12,10 +12,24 @@ export async function createTodo(data: Omit<Todo, "id">): Promise<Todo> {
   return newTodo;
 }
 
-export async function updateTodo(data: Todo): Promise<Todo> {
+export async function updateTodo(
+  id: string,
+  data: TodoCreateInput
+): Promise<Todo> {
   const todo = await prisma.todo.update({
-    where: { id: data.id },
+    where: { id },
     data,
+  });
+  revalidatePath("/");
+  return todo;
+}
+
+export async function updateTodoDone(id: string, done: boolean): Promise<Todo> {
+  const todo = await prisma.todo.update({
+    where: { id },
+    data: {
+      done,
+    },
   });
   revalidatePath("/");
   return todo;
